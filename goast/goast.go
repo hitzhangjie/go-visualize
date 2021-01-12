@@ -458,9 +458,9 @@ func ReceiverTypeOrPackageName(fset *token.FileSet, selectorExpr *ast.SelectorEx
 				}
 				typ = op + typ
 			}
-		case *ast.CallExpr: // `s := trpc.NewServer()`
+		case *ast.CallExpr: // `s := grpc.NewServer()`
 			// TODO 这里需要从依赖的gomodules找到trpc.NewServer的定义，然后查出其返回值类型，
-			// 如：git.code.oa.com/trpc-go/trpc-go/server.*Server
+			// 如：github.com/golang/grpc/server.*Server
 			//
 			// 这里临时为了方便，先不做这部分外部依赖的检查，直接用语句字符串表示其类型了
 			typ, _ = PosToString(fset, expr.Pos(), expr.End())
