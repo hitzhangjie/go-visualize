@@ -15,7 +15,6 @@ package cmd
 import (
 	"os"
 
-	"git.code.oa.com/gitcode/gitcode/cmd/annotations"
 	"github.com/spf13/cobra"
 )
 
@@ -29,27 +28,24 @@ var completionCmd = &cobra.Command{
 	Short: "生成shell自动补全脚本",
 	Long: `To load completions:
 Bash:
-$ source <(gitcode completion bash)
+$ source <(go-visualize completion bash)
 # To load completions for each session, execute once:
 Linux:
-  $ gitcode completion bash > /etc/bash_completion.d/gitcode
+  $ go-visualize completion bash > /etc/bash_completion.d/go-visualize
 MacOS:
-  $ gitcode completion bash > /usr/local/etc/bash_completion.d/gitcode
+  $ go-visualize completion bash > /usr/local/etc/bash_completion.d/go-visualize
 Zsh:
 # If shell completion is not already enabled in your environment you will need
 # to enable it.  You can execute the following once:
 $ echo "autoload -U compinit; compinit" >> ~/.zshrc
 # To load completions for each session, execute once:
-$ gitcode completion zsh > "${fpath[1]}/_yourprogram"
+$ go-visualize completion zsh > "${fpath[1]}/_yourprogram"
 # You will need to start a new shell for this setup to take effect.
 Fish:
-$ gitcodecompletion fish | source
+$ go-visualize completion fish | source
 # To load completions for each session, execute once:
-$ gitcode completion fish > ~/.config/fish/completions/gitcode.fish
+$ go-visualize completion fish > ~/.config/fish/completions/go-visualize.fish
 `,
-	Annotations: map[string]string{
-		annotations.CmdGroupAnnotation: annotations.CmdGroupOthers,
-	},
 	DisableFlagsInUseLine: true,
 	ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
 	Args:                  cobra.ExactValidArgs(1),

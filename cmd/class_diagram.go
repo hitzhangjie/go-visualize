@@ -20,12 +20,11 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 
 	"github.com/go-kit/kit/log"
-	"github.com/hitzhangjie/go-visualize/http"
+	"github.com/hitzhangjie/go-visualize/plantuml"
 	"github.com/kazukousen/gouml"
 	"github.com/spf13/cobra"
 )
@@ -57,7 +56,7 @@ var classDiagramCmd = &cobra.Command{
 		}
 		fmt.Printf("generate file: %s\n", puml)
 
-		if err := renderPlantUML(puml); err != nil {
+		if err := plantuml.RenderPlantUML(puml); err != nil {
 			return err
 		}
 		png := strings.TrimSuffix(puml, filepath.Ext(puml)) + ".png"
@@ -108,28 +107,5 @@ func writeFile(output string, buf []byte) error {
 	}
 
 	io.Copy(os.Stdout, bytes.NewBuffer(buf))
-	return nil
-}
-
-func renderPlantUML(pumlFile string) error {
-
-	// download plantuml.jar if not found
-	home, _ := os.UserHomeDir()
-	jar := filepath.Join(home, "plantuml.jar")
-	_, err := os.Lstat(jar)
-	if err != nil {
-		if !os.IsNotExist(err) {
-			return err
-		}
-		err := http.DownloadFile(jar, "https://nchc.dl.sourceforge.net/project/plantuml/plantuml.jar")
-		if err != nil {
-			return fmt.Errorf("download plantuml.jar error: %v", err)
-		}
-	}
-
-	cmd := exec.Command("java", "-jar", jar, "-progress", pumlFile)
-	if msg, err := cmd.CombinedOutput(); err != nil {
-		return fmt.Errorf("run plantuml error: %v,\nmsg:%s", err, msg)
-	}
 	return nil
 }
