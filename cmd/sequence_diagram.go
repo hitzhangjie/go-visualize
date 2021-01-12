@@ -76,7 +76,7 @@ var visualizeSequenceCmd = &cobra.Command{
 			return err
 		}
 
-		buf, err := goast.RenderFunctionWithPlantUML(funcDecl, fset, pkgs)
+		buf, err := goast.RenderFunction(funcDecl, fset, pkgs)
 		if err != nil {
 			return err
 		}

@@ -9,23 +9,6 @@ import (
 	"os"
 )
 
-type Step struct {
-	Package            ast.Package  // 包名
-	Func               ast.FuncDecl // 函数
-	Stmt               ast.Stmt     // 函数语句
-	Comment            string       // 语句注释
-	CallHierarchyDepth int          // 调用深度
-
-	Position  token.Position //Deprecated，直接使用stmt.Pos/End就可以
-	Statement string         //Deprecated，这个也可以去掉，后续再格式化处理
-	Caller    string         //Deprecated，这个可以后续再解析 caller, $package.$function
-
-	Typ     string   //Deprecated，这个可以后续再解析 receiver type
-	X       string   //Deprecated，这个可以后续再解析 receiver variable, or package name
-	Seletor string   //Deprecated，这个可以后续再解析 member function or package exported function
-	Args    []string //Deprecated，这个可以后续再解析 function args
-}
-
 func RenderXSelStmt(fset *token.FileSet, stmt ast.Stmt, depth int, buf *bytes.Buffer) error {
 
 	pos := fset.Position(stmt.Pos()).String()
@@ -133,7 +116,7 @@ func RenderXSelStmt(fset *token.FileSet, stmt ast.Stmt, depth int, buf *bytes.Bu
 	if findNode != nil {
 		// recursive expand function body
 		fmt.Println(typ, selName)
-		dat, err := RenderFunctionWithPlantUML(findNode, fset, pkgs)
+		dat, err := RenderFunction(findNode, fset, pkgs)
 		if err != nil {
 			return err
 		}

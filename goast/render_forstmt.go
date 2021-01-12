@@ -8,48 +8,8 @@ import (
 	"go/token"
 )
 
-// RenderForStmt 渲染forstmt，在console中显示
-func RenderForStmt(fset *token.FileSet, stmt *ast.ForStmt) error {
-	if stmt == nil {
-		return errors.New("nil *ast.ForStmt")
-	}
-
-	fmt.Printf("for\n")
-
-	// init
-	s, err := PosToString(fset, stmt.Init.Pos(), stmt.Init.End())
-	if err != nil {
-		return err
-	}
-	fmt.Printf("\tinit: %s\n", s)
-
-	// cond
-	s, err = PosToString(fset, stmt.Cond.Pos(), stmt.Cond.End())
-	if err != nil {
-		return err
-	}
-	fmt.Printf("\tcond: %s\n", s)
-
-	s, err = PosToString(fset, stmt.Post.Pos(), stmt.Post.End())
-	if err != nil {
-		return err
-	}
-	fmt.Printf("\tpost: %s\n", s)
-
-	//body
-	fmt.Printf("\tbody:\n")
-	for _, s := range stmt.Body.List {
-		s, err := PosToString(fset, s.Pos(), s.End())
-		if err != nil {
-			return err
-		}
-		fmt.Printf("\t\tstmt: %s\n", s)
-	}
-	return nil
-}
-
-// RenderForStmtWithPlantUML 渲染forstmt，在plantuml中显示
-func RenderForStmtWithPlantUML(fset *token.FileSet, stmt *ast.ForStmt, buf *bytes.Buffer) error {
+// RenderForStmt 渲染forstmt，在plantuml中显示
+func RenderForStmt(fset *token.FileSet, stmt *ast.ForStmt, buf *bytes.Buffer) error {
 	if stmt == nil {
 		return errors.New("nil *ast.ForStmt")
 	}
@@ -94,7 +54,7 @@ func RenderForStmtWithPlantUML(fset *token.FileSet, stmt *ast.ForStmt, buf *byte
 		//	return err
 		//}
 		//fmt.Fprintf(buf, "\t\tnote right: body stmt: %s\n", joinNewLine(s))
-		dat, err := RenderStmtWithPlantUML(fset, s)
+		dat, err := RenderStmt(fset, s)
 		if err != nil {
 			return err
 		}
